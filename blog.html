@@ -1,84 +1,166 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog - RONNEYMAR</title>
 
-<title>Blog - RONNEYMAR</title>
-
-<style>
-
-body{
-    margin:0;
-    background:#0f0f0f;
-    color:white;
-    font-family:Arial;
-}
-
-header{
-    background:#000;
-    padding:30px;
-    text-align:center;
-}
-
-h1{
-    margin:0;
-    font-size:50px;
-}
-
-.container{
-    max-width:900px;
-    margin:auto;
-    padding:40px 20px;
-}
-
-.post{
-    background:#1a1a1a;
-    padding:30px;
-    border-radius:15px;
-    margin-bottom:30px;
-}
-
-.post h2{
-    margin-top:0;
-}
-
-a{
-    color:#00ffae;
-    text-decoration:none;
-}
-
-.voltar{
-    display:inline-block;
-    margin-top:20px;
-}
-
-</style>
+  <style>
+    body{
+      margin:0;
+      background:#0f0f0f;
+      color:#fff;
+      font-family:Arial, sans-serif;
+    }
+    header{
+      padding:50px 20px 30px;
+      text-align:center;
+      background:linear-gradient(180deg,#000,#111);
+      border-bottom:1px solid #222;
+    }
+    header h1{
+      margin:0;
+      font-size:56px;
+      letter-spacing:3px;
+    }
+    header p{
+      color:#bdbdbd;
+      margin:14px 0 0;
+      font-size:18px;
+    }
+    nav{
+      margin-top:25px;
+    }
+    nav a{
+      color:#00ffae;
+      text-decoration:none;
+      margin:0 12px;
+      font-weight:bold;
+    }
+    .container{
+      max-width:1000px;
+      margin:auto;
+      padding:40px 20px 60px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:20px;
+    }
+    .card{
+      background:#1a1a1a;
+      border:1px solid #2a2a2a;
+      border-radius:16px;
+      padding:22px;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+    }
+    .card h2{
+      margin-top:0;
+      font-size:22px;
+    }
+    .meta{
+      color:#8b8b8b;
+      font-size:13px;
+      margin-bottom:12px;
+    }
+    .card p{
+      line-height:1.6;
+      color:#e6e6e6;
+    }
+    .tag{
+      display:inline-block;
+      margin-top:14px;
+      padding:7px 12px;
+      border-radius:999px;
+      background:#111;
+      color:#00ffae;
+      text-decoration:none;
+      font-size:13px;
+      border:1px solid #2a2a2a;
+    }
+    .about{
+      margin-top:35px;
+      padding:24px;
+      background:#121212;
+      border:1px solid #242424;
+      border-radius:16px;
+    }
+    .back{
+      display:inline-block;
+      margin-top:24px;
+      color:#00ffae;
+      text-decoration:none;
+      font-weight:bold;
+    }
+    footer{
+      text-align:center;
+      padding:25px 20px 40px;
+      color:#777;
+      border-top:1px solid #222;
+      background:#090909;
+    }
+  </style>
 </head>
 
 <body>
 
 <header>
-<h1>BLOG</h1>
+  <h1>BLOG</h1>
+  <p>Ideias, análises, poesia, música e reflexões.</p>
+  <nav>
+    <a href="index.html">Início</a>
+    <a href="blog.html">Blog</a>
+  </nav>
 </header>
 
 <div class="container">
 
-<div class="post">
-<h2>Meu primeiro artigo</h2>
+  <div class="grid">
+    <article class="card">
+      <div class="meta">Artigo • 2026</div>
+      <h2>Meu primeiro artigo</h2>
+      <p>
+        Bem-vindo ao meu blog oficial. Aqui publicarei análises, ideias, músicas,
+        poesias e reflexões com identidade própria.
+      </p>
+      <a class="tag" href="#">Ler mais</a>
+    </article>
 
-<p>
-Bem-vindo ao meu blog oficial.
-Aqui publicarei análises, ideias,
-músicas, poesias e reflexões.
-</p>
+    <article class="card">
+      <div class="meta">Poesia • 2026</div>
+      <h2>Versos de resistência</h2>
+      <p>
+        Um espaço para poemas, frases fortes e textos que falam de vida, fé,
+        luta e resiliência.
+      </p>
+      <a class="tag" href="#">Ler mais</a>
+    </article>
+
+    <article class="card">
+      <div class="meta">Análise • 2026</div>
+      <h2>Leitura crítica do tempo</h2>
+      <p>
+        Comentários diretos sobre política, comportamento, cultura e os sinais
+        do nosso tempo.
+      </p>
+      <a class="tag" href="#">Ler mais</a>
+    </article>
+  </div>
+
+  <div class="about">
+    <h2>Sobre este blog</h2>
+    <p>
+      Este é o espaço oficial de RONNEYMAR na internet. Aqui o conteúdo vai crescer
+      por etapas, com páginas internas, posts, links sociais e um visual cada vez mais forte.
+    </p>
+  </div>
+
+  <a class="back" href="index.html">← Voltar ao início</a>
 </div>
 
-<a class="voltar" href="index.html">
-← Voltar ao início
-</a>
-
-</div>
+<footer>
+  © 2026 - RONNEYMAR
+</footer>
 
 </body>
 </html>
