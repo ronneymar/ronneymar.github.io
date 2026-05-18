@@ -1,166 +1,412 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog - RONNEYMAR</title>
-
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blog — RONNEYMAR</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Nunito:wght@300;400;600;700;800&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
   <style>
-    body{
-      margin:0;
-      background:#0f0f0f;
-      color:#fff;
-      font-family:Arial, sans-serif;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange:      #FF6B1A;
+      --orange-light:#FF8C42;
+      --orange-pale: #FFF0E6;
+      --orange-warm: #FFD4B3;
+      --white:       #FFFFFF;
+      --off-white:   #FAFAFA;
+      --gray-text:   #888;
+      --dark-text:   #222;
+      --mid-text:    #555;
     }
-    header{
-      padding:50px 20px 30px;
-      text-align:center;
-      background:linear-gradient(180deg,#000,#111);
-      border-bottom:1px solid #222;
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Nunito Sans', sans-serif; background: var(--white); color: var(--dark-text); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 56px; height: 68px;
+      background: rgba(255,255,255,0.96); backdrop-filter: blur(16px);
+      box-shadow: 0 2px 20px rgba(255,107,26,0.08);
     }
-    header h1{
-      margin:0;
-      font-size:56px;
-      letter-spacing:3px;
+    .nav-logo { font-family: 'Nunito', sans-serif; font-size: 1.5rem; font-weight: 800; letter-spacing: 3px; color: var(--dark-text); text-decoration: none; }
+    .nav-logo span { color: var(--orange); }
+    .nav-links { display: flex; gap: 36px; list-style: none; align-items: center; }
+    .nav-links a { font-size: 0.8rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--mid-text); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--orange); }
+    .nav-cta { background: var(--orange) !important; color: white !important; padding: 9px 22px; border-radius: 24px; box-shadow: 0 4px 14px rgba(255,107,26,0.3); }
+
+    /* PAGE HEADER */
+    .page-header {
+      background: var(--orange-pale);
+      padding: 140px 56px 72px;
+      position: relative; overflow: hidden;
     }
-    header p{
-      color:#bdbdbd;
-      margin:14px 0 0;
-      font-size:18px;
+    .page-header::after {
+      content: 'BLOG';
+      font-family: 'Nunito', sans-serif; font-size: 22vw; font-weight: 800;
+      color: rgba(255,107,26,0.06);
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      pointer-events: none; white-space: nowrap; letter-spacing: -0.02em;
     }
-    nav{
-      margin-top:25px;
+    .ph-inner { max-width: 1280px; margin: 0 auto; position: relative; z-index: 2; }
+    .ph-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--orange); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+    .ph-label::before { content: ''; display: block; width: 36px; height: 2px; background: var(--orange); }
+    .ph-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 900; color: var(--dark-text); line-height: 1; }
+    .ph-title em { color: var(--orange); font-style: italic; }
+    .ph-desc { margin-top: 18px; font-size: 1rem; color: var(--mid-text); max-width: 480px; line-height: 1.75; }
+
+    /* FILTERS */
+    .filters {
+      background: white; border-bottom: 1px solid #f0f0f0;
+      position: sticky; top: 68px; z-index: 50;
     }
-    nav a{
-      color:#00ffae;
-      text-decoration:none;
-      margin:0 12px;
-      font-weight:bold;
+    .f-inner { max-width: 1280px; margin: 0 auto; padding: 0 56px; display: flex; gap: 4px; overflow-x: auto; }
+    .f-btn {
+      flex-shrink: 0; padding: 18px 22px;
+      font-family: 'Nunito', sans-serif; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--mid-text); border: none; background: none; cursor: pointer;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: color 0.2s, border-color 0.2s;
     }
-    .container{
-      max-width:1000px;
-      margin:auto;
-      padding:40px 20px 60px;
+    .f-btn:hover { color: var(--orange); }
+    .f-btn.active { color: var(--orange); border-bottom-color: var(--orange); }
+
+    /* BLOG LAYOUT */
+    .blog-wrap { max-width: 1280px; margin: 0 auto; padding: 64px 56px 90px; }
+    .blog-layout { display: grid; grid-template-columns: 1fr 300px; gap: 60px; }
+
+    /* POST CARDS */
+    .posts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 26px; }
+    .p-card {
+      background: white; border-radius: 20px; overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
     }
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:20px;
+    .p-card:hover { transform: translateY(-6px); box-shadow: 0 14px 40px rgba(255,107,26,0.12); }
+    .p-card.featured { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; }
+    .p-thumb { height: 200px; display: flex; align-items: center; justify-content: center; }
+    .p-card.featured .p-thumb { height: 100%; min-height: 260px; }
+    .t-auto { background: linear-gradient(135deg, #FF8C42, #FF4500); }
+    .t-wine { background: linear-gradient(135deg, #F5BCBC, #C0392B); }
+    .t-life { background: linear-gradient(135deg, #A8CFEF, #2471A3); }
+    .t-road { background: linear-gradient(135deg, #A9DFBF, #1E8449); }
+    .t-misc { background: linear-gradient(135deg, #D7ACEF, #7D3C98); }
+    .p-body { padding: 22px 24px 26px; }
+    .p-card.featured .p-body { padding: 32px; display: flex; flex-direction: column; justify-content: center; }
+    .p-cat {
+      display: inline-flex; gap: 5px; align-items: center;
+      font-size: 0.66rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      color: white; background: var(--orange); padding: 5px 11px; border-radius: 10px; margin-bottom: 12px;
     }
-    .card{
-      background:#1a1a1a;
-      border:1px solid #2a2a2a;
-      border-radius:16px;
-      padding:22px;
-      box-shadow:0 10px 30px rgba(0,0,0,.25);
+    .p-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--dark-text); line-height: 1.35; margin-bottom: 10px; }
+    .p-card.featured .p-title { font-size: 1.55rem; }
+    .p-excerpt { font-size: 0.83rem; color: var(--mid-text); line-height: 1.75; margin-bottom: 14px; }
+    .p-meta { font-size: 0.73rem; color: var(--gray-text); display: flex; gap: 12px; }
+    .p-more { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 700; color: var(--orange); text-decoration: none; margin-top: 14px; transition: gap 0.2s; }
+    .p-card:hover .p-more { gap: 10px; }
+
+    /* LOAD MORE */
+    .load-more { text-align: center; margin-top: 48px; }
+    .load-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: none; border: 2px solid var(--orange); color: var(--orange);
+      font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      padding: 14px 32px; border-radius: 28px; cursor: pointer;
+      transition: background 0.2s, color 0.2s;
     }
-    .card h2{
-      margin-top:0;
-      font-size:22px;
+    .load-btn:hover { background: var(--orange); color: white; }
+
+    /* SIDEBAR */
+    .sidebar { display: flex; flex-direction: column; gap: 32px; }
+    .widget { background: var(--off-white); border-radius: 18px; padding: 26px; }
+    .widget-title { font-size: 0.68rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--orange); margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--orange-warm); }
+
+    .cat-list { display: flex; flex-direction: column; gap: 2px; }
+    .cat-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid #efefef;
+      text-decoration: none; color: var(--dark-text); font-size: 0.86rem;
+      transition: color 0.2s, padding-left 0.2s;
     }
-    .meta{
-      color:#8b8b8b;
-      font-size:13px;
-      margin-bottom:12px;
+    .cat-row:hover { color: var(--orange); padding-left: 6px; }
+    .cat-count { font-size: 0.73rem; font-weight: 700; background: var(--orange-pale); color: var(--orange); padding: 3px 10px; border-radius: 10px; }
+    .cat-row:hover .cat-count { background: var(--orange); color: white; }
+
+    .pop-list { display: flex; flex-direction: column; gap: 14px; }
+    .pop-item { display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: start; text-decoration: none; }
+    .pop-n { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--orange-warm); line-height: 1; transition: color 0.2s; }
+    .pop-item:hover .pop-n { color: var(--orange); }
+    .pop-title { font-size: 0.82rem; font-weight: 600; color: var(--dark-text); line-height: 1.4; transition: color 0.2s; }
+    .pop-item:hover .pop-title { color: var(--orange); }
+    .pop-date { font-size: 0.7rem; color: var(--gray-text); margin-top: 2px; }
+
+    .tags-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      font-family: 'Nunito', sans-serif; font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 14px;
+      border: 1.5px solid #e8e8e8; color: var(--mid-text);
+      text-decoration: none; transition: background 0.2s, color 0.2s, border-color 0.2s;
     }
-    .card p{
-      line-height:1.6;
-      color:#e6e6e6;
-    }
-    .tag{
-      display:inline-block;
-      margin-top:14px;
-      padding:7px 12px;
-      border-radius:999px;
-      background:#111;
-      color:#00ffae;
-      text-decoration:none;
-      font-size:13px;
-      border:1px solid #2a2a2a;
-    }
-    .about{
-      margin-top:35px;
-      padding:24px;
-      background:#121212;
-      border:1px solid #242424;
-      border-radius:16px;
-    }
-    .back{
-      display:inline-block;
-      margin-top:24px;
-      color:#00ffae;
-      text-decoration:none;
-      font-weight:bold;
-    }
-    footer{
-      text-align:center;
-      padding:25px 20px 40px;
-      color:#777;
-      border-top:1px solid #222;
-      background:#090909;
+    .tag:hover { background: var(--orange); color: white; border-color: var(--orange); }
+
+    /* FOOTER */
+    footer { background: #1a1a1a; padding: 48px 56px 24px; }
+    .ft-row { display: flex; align-items: center; justify-content: space-between; padding-bottom: 24px; border-bottom: 1px solid #2e2e2e; margin-bottom: 22px; }
+    .ft-logo { font-family: 'Nunito', sans-serif; font-size: 1.4rem; font-weight: 800; letter-spacing: 3px; color: white; text-decoration: none; }
+    .ft-logo span { color: var(--orange); }
+    .ft-links { display: flex; gap: 28px; list-style: none; }
+    .ft-links a { font-size: 0.78rem; color: #666; text-decoration: none; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; }
+    .ft-links a:hover { color: var(--orange-light); }
+    .soc { display: flex; gap: 10px; }
+    .soc a { width: 34px; height: 34px; border-radius: 50%; background: #2a2a2a; display: flex; align-items: center; justify-content: center; color: #666; text-decoration: none; font-size: 0.74rem; font-weight: 700; transition: background 0.2s, color 0.2s; }
+    .soc a:hover { background: var(--orange); color: white; }
+    .ft-bottom { display: flex; justify-content: space-between; }
+    .ft-bottom p { font-size: 0.76rem; color: #444; }
+
+    /* REVEAL */
+    .rev { opacity: 0; transform: translateY(22px); transition: opacity 0.6s, transform 0.6s; }
+    .rev.on { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 960px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .page-header { padding: 110px 24px 56px; }
+      .f-inner { padding: 0 24px; }
+      .blog-wrap { padding: 48px 24px 60px; }
+      .blog-layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .posts-grid { grid-template-columns: 1fr; }
+      .p-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
+      .p-card.featured .p-thumb { height: 200px; }
+      footer { padding: 36px 24px 18px; }
+      .ft-row { flex-wrap: wrap; gap: 16px; }
     }
   </style>
 </head>
-
 <body>
 
-<header>
-  <h1>BLOG</h1>
-  <p>Ideias, análises, poesia, música e reflexões.</p>
-  <nav>
-    <a href="index.html">Início</a>
-    <a href="blog.html">Blog</a>
-  </nav>
-</header>
+<nav>
+  <a href="index.html" class="nav-logo">RONNEY<span>MAR</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Início</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
+    <li><a href="index.html#automoveis">Automóveis</a></li>
+    <li><a href="index.html#vinhos">Vinhos</a></li>
+    <li><a href="index.html#sobre">Sobre</a></li>
+    <li><a href="index.html#sobre" class="nav-cta">Newsletter</a></li>
+  </ul>
+</nav>
 
-<div class="container">
-
-  <div class="grid">
-    <article class="card">
-      <div class="meta">Artigo • 2026</div>
-      <h2>Meu primeiro artigo</h2>
-      <p>
-        Bem-vindo ao meu blog oficial. Aqui publicarei análises, ideias, músicas,
-        poesias e reflexões com identidade própria.
-      </p>
-      <a class="tag" href="#">Ler mais</a>
-    </article>
-
-    <article class="card">
-      <div class="meta">Poesia • 2026</div>
-      <h2>Versos de resistência</h2>
-      <p>
-        Um espaço para poemas, frases fortes e textos que falam de vida, fé,
-        luta e resiliência.
-      </p>
-      <a class="tag" href="#">Ler mais</a>
-    </article>
-
-    <article class="card">
-      <div class="meta">Análise • 2026</div>
-      <h2>Leitura crítica do tempo</h2>
-      <p>
-        Comentários diretos sobre política, comportamento, cultura e os sinais
-        do nosso tempo.
-      </p>
-      <a class="tag" href="#">Ler mais</a>
-    </article>
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="ph-inner">
+    <p class="ph-label">Todas as publicações</p>
+    <h1 class="ph-title">O <em>Blog</em></h1>
+    <p class="ph-desc">Automóveis, vinhos, road trips e a vida de quem curte as coisas boas com simplicidade.</p>
   </div>
-
-  <div class="about">
-    <h2>Sobre este blog</h2>
-    <p>
-      Este é o espaço oficial de RONNEYMAR na internet. Aqui o conteúdo vai crescer
-      por etapas, com páginas internas, posts, links sociais e um visual cada vez mais forte.
-    </p>
-  </div>
-
-  <a class="back" href="index.html">← Voltar ao início</a>
 </div>
 
+<!-- FILTERS -->
+<div class="filters">
+  <div class="f-inner">
+    <button class="f-btn active" data-filter="all">Todos</button>
+    <button class="f-btn" data-filter="auto">🚗 Automóveis</button>
+    <button class="f-btn" data-filter="wine">🍷 Vinhos</button>
+    <button class="f-btn" data-filter="life">😄 Kakareko</button>
+    <button class="f-btn" data-filter="road">🗺️ Road Trip</button>
+  </div>
+</div>
+
+<!-- BLOG -->
+<div class="blog-wrap">
+  <div class="blog-layout">
+    <!-- POSTS -->
+    <div>
+      <div class="posts-grid">
+
+        <div class="p-card featured rev" data-cat="auto">
+          <div class="p-thumb t-auto">
+            <svg width="110" height="110" viewBox="0 0 80 80" fill="none"><path d="M14 48h52M20 48V36l8-16h24l8 16v12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="26" cy="52" r="6" stroke="white" stroke-width="2.5"/><circle cx="54" cy="52" r="6" stroke="white" stroke-width="2.5"/></svg>
+          </div>
+          <div class="p-body">
+            <span class="p-cat">🚗 Automóveis · Destaque</span>
+            <h2 class="p-title">Os melhores lançamentos de 2025 que todo apaixonado por carros precisa conhecer</h2>
+            <p class="p-excerpt">Da eletrificação ao design agressivo — este ano chegaram modelos que redefinem o que esperamos de um automóvel. Veja os destaques que mais me chamaram atenção.</p>
+            <div class="p-meta"><span>📅 15 Mai 2025</span><span>⏱ 5 min</span></div>
+            <a href="#" class="p-more">Ler artigo completo →</a>
+          </div>
+        </div>
+
+        <div class="p-card rev" data-cat="wine">
+          <div class="p-thumb t-wine"><svg width="80" height="80" viewBox="0 0 80 80" fill="none"><path d="M28 16h24l-4 24c0 8-8 12-8 12s-8-4-8-12L28 16z" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="40" y1="52" x2="40" y2="66" stroke="white" stroke-width="2.5" stroke-linecap="round"/><path d="M32 66h16" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+          <div class="p-body">
+            <span class="p-cat">🍷 Vinhos</span>
+            <h3 class="p-title">Tannat: o vinho gaúcho que conquistou o mundo</h3>
+            <p class="p-excerpt">Descobri na taça a força de uma uva que carrega alma e terroir numa única golfada.</p>
+            <div class="p-meta"><span>📅 10 Mai 2025</span><span>⏱ 4 min</span></div>
+            <a href="#" class="p-more">Ler →</a>
+          </div>
+        </div>
+
+        <div class="p-card rev" data-cat="life">
+          <div class="p-thumb t-life"><svg width="80" height="80" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="28" r="12" stroke="white" stroke-width="2.5"/><path d="M18 62c0-12.15 9.85-22 22-22s22 9.85 22 22" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+          <div class="p-body">
+            <span class="p-cat">😄 Kakareko</span>
+            <h3 class="p-title">Sobre ser Kakareko: vivendo com estilo e sem frescura</h3>
+            <p class="p-excerpt">Uma crônica sobre identidade e o prazer das coisas boas da vida.</p>
+            <div class="p-meta"><span>📅 5 Mai 2025</span><span>⏱ 3 min</span></div>
+            <a href="#" class="p-more">Ler →</a>
+          </div>
+        </div>
+
+        <div class="p-card rev" data-cat="auto">
+          <div class="p-thumb t-auto"><svg width="80" height="80" viewBox="0 0 80 80" fill="none"><path d="M14 48h52M20 48V36l8-16h24l8 16v12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="26" cy="52" r="6" stroke="white" stroke-width="2"/><circle cx="54" cy="52" r="6" stroke="white" stroke-width="2"/></svg></div>
+          <div class="p-body">
+            <span class="p-cat">🚗 Automóveis</span>
+            <h3 class="p-title">Elétrico ou a combustão? A difícil escolha do motorista moderno</h3>
+            <p class="p-excerpt">Prós, contras e minha experiência real com os dois mundos.</p>
+            <div class="p-meta"><span>📅 12 Mai 2025</span><span>⏱ 6 min</span></div>
+            <a href="#" class="p-more">Ler →</a>
+          </div>
+        </div>
+
+        <div class="p-card rev" data-cat="wine">
+          <div class="p-thumb t-wine"><svg width="80" height="80" viewBox="0 0 80 80" fill="none"><path d="M28 16h24l-4 24c0 8-8 12-8 12s-8-4-8-12L28 16z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="40" y1="52" x2="40" y2="66" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div class="p-body">
+            <span class="p-cat">🍷 Vinhos</span>
+            <h3 class="p-title">Malbec argentino de altitude: notas de degustação</h3>
+            <p class="p-excerpt">Meu primeiro contato com um vinho de altitude e o que ele tem de especial.</p>
+            <div class="p-meta"><span>📅 8 Mai 2025</span><span>⏱ 4 min</span></div>
+            <a href="#" class="p-more">Ler →</a>
+          </div>
+        </div>
+
+        <div class="p-card rev" data-cat="road">
+          <div class="p-thumb t-road"><svg width="80" height="80" viewBox="0 0 80 80" fill="none"><path d="M10 60L40 20L70 60" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 60L40 44L50 60" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="10" y1="60" x2="70" y2="60" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+          <div class="p-body">
+            <span class="p-cat">🗺️ Road Trip</span>
+            <h3 class="p-title">Road trip pelo interior do Paraná: paisagens que você precisa ver</h3>
+            <p class="p-excerpt">De Terra Rica ao interior — um roteiro com paradas que valem cada km.</p>
+            <div class="p-meta"><span>📅 3 Mai 2025</span><span>⏱ 5 min</span></div>
+            <a href="#" class="p-more">Ler →</a>
+          </div>
+        </div>
+
+        <div class="p-card rev" data-cat="auto">
+          <div class="p-thumb t-auto"><svg width="80" height="80" viewBox="0 0 80 80" fill="none"><path d="M14 48h52M20 48V36l8-16h24l8 16v12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="26" cy="52" r="6" stroke="white" stroke-width="2"/><circle cx="54" cy="52" r="6" stroke="white" stroke-width="2"/></svg></div>
+          <div class="p-body">
+            <span class="p-cat">🚗 Automóveis</span>
+            <h3 class="p-title">50 mil km rodados: o que aprendi sobre manutenção do carro</h3>
+            <p class="p-excerpt">Dicas práticas e economias que fiz ao longo da vida útil do veículo.</p>
+            <div class="p-meta"><span>📅 28 Abr 2025</span><span>⏱ 4 min</span></div>
+            <a href="#" class="p-more">Ler →</a>
+          </div>
+        </div>
+
+        <div class="p-card rev" data-cat="life">
+          <div class="p-thumb t-misc"><svg width="80" height="80" viewBox="0 0 80 80" fill="none"><path d="M40 20 L50 36 L68 38 L54 52 L58 70 L40 61 L22 70 L26 52 L12 38 L30 36 Z" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="p-body">
+            <span class="p-cat">😄 Kakareko</span>
+            <h3 class="p-title">As pequenas coisas que tornam a vida mais rica</h3>
+            <p class="p-excerpt">Reflexões sobre o que realmente importa no dia a dia.</p>
+            <div class="p-meta"><span>📅 22 Abr 2025</span><span>⏱ 3 min</span></div>
+            <a href="#" class="p-more">Ler →</a>
+          </div>
+        </div>
+
+      </div>
+      <div class="load-more rev">
+        <button class="load-btn">Carregar mais artigos ↓</button>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="widget rev">
+        <h3 class="widget-title">Categorias</h3>
+        <div class="cat-list">
+          <a href="#" class="cat-row">🚗 Automóveis <span class="cat-count">8</span></a>
+          <a href="#" class="cat-row">🍷 Vinhos <span class="cat-count">5</span></a>
+          <a href="#" class="cat-row">😄 Kakareko <span class="cat-count">4</span></a>
+          <a href="#" class="cat-row">🗺️ Road Trip <span class="cat-count">3</span></a>
+          <a href="#" class="cat-row">🍽️ Gastronomia <span class="cat-count">2</span></a>
+        </div>
+      </div>
+
+      <div class="widget rev">
+        <h3 class="widget-title">Mais lidos</h3>
+        <div class="pop-list">
+          <a href="#" class="pop-item"><span class="pop-n">01</span><div><p class="pop-title">Os lançamentos de carros que mais me impressionaram</p><p class="pop-date">15 Mai 2025</p></div></a>
+          <a href="#" class="pop-item"><span class="pop-n">02</span><div><p class="pop-title">Tannat: o vinho gaúcho que conquistou o mundo</p><p class="pop-date">10 Mai 2025</p></div></a>
+          <a href="#" class="pop-item"><span class="pop-n">03</span><div><p class="pop-title">Road trip pelo interior do Paraná</p><p class="pop-date">3 Mai 2025</p></div></a>
+        </div>
+      </div>
+
+      <div class="widget rev">
+        <h3 class="widget-title">Tags</h3>
+        <div class="tags-cloud">
+          <a href="#" class="tag">Carros</a>
+          <a href="#" class="tag">Vinhos</a>
+          <a href="#" class="tag">Paraná</a>
+          <a href="#" class="tag">Road Trip</a>
+          <a href="#" class="tag">Elétricos</a>
+          <a href="#" class="tag">Degustação</a>
+          <a href="#" class="tag">Malbec</a>
+          <a href="#" class="tag">Tannat</a>
+          <a href="#" class="tag">Lifestyle</a>
+          <a href="#" class="tag">SUV</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- FOOTER -->
 <footer>
-  © 2026 - RONNEYMAR
+  <div class="ft-row">
+    <a href="index.html" class="ft-logo">RONNEY<span>MAR</span></a>
+    <ul class="ft-links">
+      <li><a href="index.html">Início</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="index.html#sobre">Newsletter</a></li>
+    </ul>
+    <div class="soc"><a href="#">IG</a><a href="#">X</a><a href="#">YT</a></div>
+  </div>
+  <div class="ft-bottom">
+    <p>© 2025 Ronneymar. Todos os direitos reservados.</p>
+    <p>Feito com ❤️ e ☕</p>
+  </div>
 </footer>
 
+<script>
+  // Filter
+  document.querySelectorAll('.f-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      document.querySelectorAll('.p-card').forEach(c => {
+        c.style.display = (f === 'all' || c.dataset.cat === f) ? '' : 'none';
+      });
+    });
+  });
+
+  // Reveal
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('on'), i * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.rev').forEach(el => obs.observe(el));
+</script>
 </body>
 </html>
